@@ -27,7 +27,7 @@ def encontrar_seam_pd_aux(energia, fila, columna, M):
             siguiente_columna = columna + columna_adyacente
             if 0 <= siguiente_columna < m:
                 encontrar_seam_pd_aux(energia, fila + 1, siguiente_columna, M)
-                vecinos_adyacentes.append(M[fila+1][columna])    
+                vecinos_adyacentes.append(M[fila+1][siguiente_columna])    
         M[fila][columna] = energia[fila][columna] + minimo_energia(vecinos_adyacentes)
 
 
