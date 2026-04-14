@@ -10,6 +10,11 @@
 #include "ProgramacionDinamica.h"
 #include <chrono>
 
+#include <chrono>
+#include <filesystem>
+
+using namespace std;
+
 // Lee una matriz de energía desde un archivo de texto.
 // Formato esperado:
 //   filas columnas
@@ -30,6 +35,7 @@ std::vector<std::vector<double>> leerMatrizEnergia(const std::string& ruta) {
 
     return energia;
 }
+
 
 // Ejecuta el algoritmo seleccionado y devuelve el seam encontrado
 std::vector<int> ejecutarAlgoritmo(const std::vector<std::vector<double>>& energia, const std::string& algoritmo) {
@@ -119,7 +125,65 @@ void imprimirUso() {
               << "  ./seam --imagen img/foto.jpg --algoritmo pd --iteraciones 50\n";
 }
 
+
+void correrExperimentos() {
+    ofstream csv("resultados.csv");
+    csv << "algoritmo,varianza,instancia,tiempo_ms,podas\n"; // header
+
+    vector<string> varianzas = {"baja", "media", "alta"};
+    vector<string> algoritmos = {"bt", "fb"};
+
+    int repeticiones = 5;
+
+    for (string var : varianzas) {
+        for (int i = 0; i < 5; i++) {
+
+            string path = "../input/exp_var/" + var + "_" + to_string(i) + ".txt";
+            auto energia = leerMatrizEnergia(path);
+            
+            for (string alg : algoritmos) {
+                double podas_total = 0.0;
+                double tiempo_total = 0.0;
+
+                for (int r = 0; r < repeticiones; r++) {
+
+                    auto start = chrono::high_resolution_clock::now();
+
+                    if (alg == "bt") {
+                        ejecutarAlgoritmo(energia, alg);
+                        podas_total += obtenerPodas();
+                    } else {
+                        ejecutarAlgoritmo(energia, alg);
+                    }
+
+                    auto end = chrono::high_resolution_clock::now();
+
+                    double tiempo = chrono::duration<double, milli>(end - start).count();
+                    tiempo_total += tiempo;
+                }
+
+                double promedio = tiempo_total / repeticiones;
+                double promedio_podas = (alg == "bt") ? podas_total / repeticiones : 0;
+                csv << alg << "," << var << "," << i << "," << promedio << "," << promedio_podas << "\n";
+
+                cout << "✔ " << alg << " " << var << "_" << i
+                        << " -> " << promedio << " ms"
+                        << " | podas: " << promedio_podas << "\n";
+            }
+        }
+    }
+
+    csv.close();
+    cout << "\n📊 Resultados guardados en resultados.csv\n";
+}
+
+
 int main(int argc, char* argv[]) {
+
+    if (argc >= 2 && string(argv[1]) == "--exp") {
+        correrExperimentos();
+        return 0;
+    }
     if (argc < 2) {
         imprimirUso();
         return 1;
@@ -162,3 +226,5 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
+

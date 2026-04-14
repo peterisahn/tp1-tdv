@@ -4,6 +4,7 @@
 
 using namespace std;
 
+static int podas = 0;
 
  void encontrarSeamBackTracking_aux(const vector<vector<double>>& energia, int fila, int columna, vector<int>& actual, vector<int>& mejor, double& mejorSuma, double sumaActual) {
      int n = energia.size();
@@ -14,6 +15,7 @@ using namespace std;
      sumaActual += energia[fila][columna];
 
      if(sumaActual >= mejorSuma){
+        podas++;
          actual.pop_back();
          return;
      }else if(fila == n - 1){
@@ -35,7 +37,7 @@ using namespace std;
 
  vector<int> encontrarSeamBacktracking(const vector<vector<double>>& energia) {
      int m = energia[0].size();
-
+     podas = 0;
      vector<int> mejor;
      vector<int> actual;
      double mejorSuma = numeric_limits<double>::infinity();
@@ -48,3 +50,6 @@ using namespace std;
      return mejor;
  }
 
+int obtenerPodas() {
+    return podas;
+}
