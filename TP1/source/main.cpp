@@ -8,6 +8,7 @@
 #include "FuerzaBruta.h"
 #include "Backtracking.h"
 #include "ProgramacionDinamica.h"
+#include <chrono>
 
 // Lee una matriz de energía desde un archivo de texto.
 // Formato esperado:
@@ -63,14 +64,22 @@ void modoNumerico(const std::string& rutaEntrada, const std::string& algoritmo) 
     imprimirMatriz(energia);
     std::cout << "\n";
 
+    auto start = std::chrono::high_resolution_clock::now();
     std::vector<int> seam = ejecutarAlgoritmo(energia, algoritmo);
+    auto end = std::chrono::high_resolution_clock::now();
+    double tiempo = std::chrono::duration<double, std::milli>(end - start).count();
+
     imprimirSeam(seam, energia);
+
+    std::cout << "Tiempo de ejecución: " << tiempo << " ms\n";
 
     std::string rutaSalida = "output/numericos/seam_" + algoritmo + ".txt";
     std::ofstream salida(rutaSalida);
     if (salida.is_open()) {
         for (int f = 0; f < (int)seam.size(); f++)
             salida << "fila " << f << " -> columna " << seam[f] << "\n";
+
+        salida << "Tiempo(ms): " << tiempo << "\n";
         std::cout << "Resultado guardado en " << rutaSalida << "\n";
     }
 }
@@ -79,17 +88,25 @@ void modoImagen(const std::string& rutaImagen, const std::string& algoritmo, int
     Imagen img(rutaImagen);
     std::cout << "Imagen cargada: " << img.ancho() << "x" << img.alto() << " px\n";
 
+    auto start_total = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < iteraciones; i++) {
+        auto start = std::chrono::high_resolution_clock::now();
         std::vector<int> seam = ejecutarAlgoritmo(img.obtenerMatrizEnergia(), algoritmo);
+        auto end = std::chrono::high_resolution_clock::now();
+        double tiempo_iter = std::chrono::duration<double, std::milli>(end - start).count();
         img.eliminarSeam(seam);
 
         if ((i + 1) % 10 == 0 || i == iteraciones - 1)
             std::cout << "Iteración " << (i + 1) << "/" << iteraciones
+                      << " - Tiempo: " << tiempo_iter << " ms"
                       << " - Ancho actual: " << img.ancho() << " px\n";
     }
 
+    auto end_total = std::chrono::high_resolution_clock::now();
+    double tiempo_total = std::chrono::duration<double, std::milli>(end_total - start_total).count();
     std::string rutaSalida = "output/imagenes/resultado_" + algoritmo + ".png";
     img.guardar(rutaSalida);
+    std::cout << "Tiempo total: " << tiempo_total << " ms\n"; 
     std::cout << "Imagen guardada en " << rutaSalida << "\n";
 }
 

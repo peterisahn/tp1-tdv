@@ -4,34 +4,6 @@
 
 using namespace std;
 
-/*
-5 6
-9.0 3.0 1.0 2.0 8.0 7.0
-5.0 2.0 0.5 4.0 6.0 3.0
-7.0 1.0 2.0 0.8 5.0 4.0
-3.0 4.0 1.5 1.0 2.0 6.0
-8.0 2.0 3.0 1.5 1.0 5.0
-
-9.0 3.0 1.0
-5.0 2.0 0.5
-7.0 1.0 2.0
-                pepe = 1 --> res = {1}
-                vecinos = {2.0, 3.0}
-                pepe = pepe + min() - 1
-                1 + 0 -1 = 0
-
-{1.0, }
--1  -1  -1
--1  -1  -1
-7.0 1.0 2.0
-
-{2,3,3}12.0 4.0 1.0
-6.0 3.0 1.5
-7.0 1.0 2.0
-{3,3,2}
-    
-*/
-
 
 // Creamos una función auxiliar que devuelve el valor de la mínima energía entre los vecinos
 double minimo_energia(const vector<double>& v){
