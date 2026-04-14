@@ -110,7 +110,7 @@ void modoImagen(const std::string& rutaImagen, const std::string& algoritmo, int
 
     auto end_total = std::chrono::high_resolution_clock::now();
     double tiempo_total = std::chrono::duration<double, std::milli>(end_total - start_total).count();
-    std::string rutaSalida = "output/imagenes/resultado_" + algoritmo + ".png";
+    std::string rutaSalida = "../output/imagenes/resultado_" + algoritmo + ".png";
     img.guardar(rutaSalida);
     std::cout << "Tiempo total: " << tiempo_total << " ms\n"; 
     std::cout << "Imagen guardada en " << rutaSalida << "\n";
