@@ -131,7 +131,7 @@ void correrExperimentos() {
     csv << "algoritmo,varianza,instancia,tiempo_ms,podas\n"; // header
 
     vector<string> varianzas = {"baja", "media", "alta"};
-    vector<string> algoritmos = {"bt", "fb"};
+    vector<string> algoritmos = {"bt", "fb", "pd"};
 
     int repeticiones = 5;
 
