@@ -32,6 +32,8 @@ double minimo_energia(const vector<double>& v){
     }
 }
 
+// Algoritmo Programación Dinámica
+
 // Función Auxiliar: Toma la columna actual y rellena los valores de energía de la celda actual y de sus vecinos en el Memo. Recorre los vecinos recursivamente.
 void encontrarSeamPD_aux(const vector<vector<double>>& energia, int fila, int columna, vector<vector<double>>& M) { // Creamos el memo utilizando el método de Top-Down
     int n = energia.size();     // n es cantidad de filas
@@ -126,7 +128,7 @@ vector<int> encontrarSeamPD(const vector<vector<double>>& energia){
     M.insert(M.end(), energia.back());
     
 
-    // Recorre las columnas de la primer fila para llenar el Memo por columna y recorrer así todas las caminos  
+    // Recorremos las columnas de la primera fila para ir llenando el Memo por columna y además ir explorando todos las caminos posibles
     for (int c = 0; c < m; c++) {
         // Llama a la función encontrarSeamPD_aux que rellena la columna actual del Memo y todos los vecinos que son alcanzables desde esta columna
         encontrarSeamPD_aux(energia, 0, c, M);

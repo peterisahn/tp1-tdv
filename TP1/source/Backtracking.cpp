@@ -1,53 +1,73 @@
+#include <iostream>
 #include "Backtracking.h"
 #include <vector>
-#include <limits>
+
 
 using namespace std;
 
 static int podas = 0;
 
- void encontrarSeamBackTracking_aux(const vector<vector<double>>& energia, int fila, int columna, vector<int>& actual, vector<int>& mejor, double& mejorSuma, double sumaActual) {
-     int n = energia.size();
-     int m = energia[0].size();
+// Algoritmo Backtracking
+ void encontrarSeamBackTracking_aux(const vector<vector<double>>& energia, int fila, int columna, vector<int>& actual_seam, vector<int>& mejor_seam, double& mejor_suma, double suma_actual) {
+     int n = energia.size();    // n es cantidad de filas
+     int m = energia[0].size(); // m es cantidad de columnas
 
-    
-     actual.push_back(columna);
-     sumaActual += energia[fila][columna];
+    // Agregamos el índice de la columna actual a actual_seam
+     actual_seam.push_back(columna);
+    // Actualizamos suma_actual, más el valor de la celda actual
+     suma_actual += energia[fila][columna];
 
-     if(sumaActual >= mejorSuma){
+    // Evaluamos la condición si suma_actual es mayor que la mejor_suma hasta el momento (Caso que queremos evitar)
+     if(suma_actual >= mejor_suma){
+        // Encontramos una poda
         podas++;
-         actual.pop_back();
+        // Eliminamos el indice actual
+         actual_seam.pop_back();
          return;
+    // Caso Base: Llegamos hasta última fila, por ende 'pasó' la prueba de las podas
      }else if(fila == n - 1){
-         mejorSuma = sumaActual;   // ya sabemos que es menor porque sino hubiera entrado en la poda de optimalidad
-         mejor = actual;
+        // Actualizamos mejor_suma y mejor_seam
+         mejor_suma = suma_actual;   
+         mejor_seam = actual_seam;
      }else{
-         // Caso recursivo: probar los (hasta 3) vecinos validos en la fila siguiente
+         // Caso Recursivo:
+         // Recorremos (hasta) los 3 vecinos de la celda actual, que están en la siguiente fila
          for(int adyacentes = -1; adyacentes <= 1; adyacentes++){
              int siguiente_columna = columna + adyacentes;
-             if(siguiente_columna >= 0 && siguiente_columna < m){          // solo vecinos dentro de la imagen
-                 encontrarSeamBackTracking_aux(energia, fila + 1, siguiente_columna, actual, mejor, mejorSuma, sumaActual);
+            // Chequeamos si se encuentra en un rango válido de la matriz
+             if(siguiente_columna >= 0 && siguiente_columna < m){ 
+                // Llamamos a la recursión con la siguiente fila
+                encontrarSeamBackTracking_aux(energia, fila + 1, siguiente_columna, actual_seam, mejor_seam, mejor_suma, suma_actual);
              }
          }
      }
 
-     actual.pop_back(); // backtrack
+     actual_seam.pop_back(); // Implica hacer backtracking. Es decir, deshacer la decisión de elegir esa columna para probar con la siguiente columna adyacente
      return;
  }
 
+ // Función Principal
  vector<int> encontrarSeamBacktracking(const vector<vector<double>>& energia) {
+    // Inicializamos m como tamaño de fila (o cantidad de columnas)
      int m = energia[0].size();
+     // Inicializamos con 0 podas
      podas = 0;
-     vector<int> mejor;
-     vector<int> actual;
-     double mejorSuma = numeric_limits<double>::infinity();
 
-     // Probar cada columna como punto de partida en la fila 0
+     // Inicializamos mejor y actual, que contendrán los índices
+     vector<int> mejor_seam;
+     vector<int> actual_seam;
+
+    // Inicializamos mejor_suma con valor infinito
+    int infinito = INT_MAX; // Inicializamos la variable infinito (con la forma vista en clase)    
+    double mejor_suma = infinito;
+
+    // Recorremos las columnas de la primera fila para identificar desde qué columna obtenemos la mejor solución
      for (int c = 0; c < m; c++) {
-         encontrarSeamBackTracking_aux(energia, 0, c, actual, mejor, mejorSuma, 0.0);
+         encontrarSeamBackTracking_aux(energia, 0, c, actual_seam, mejor_seam, mejor_suma, 0.0);
      }
 
-     return mejor;
+     // Devolvemos mejor_seam, con la solución final
+     return mejor_seam;
  }
 
 int obtenerPodas() {

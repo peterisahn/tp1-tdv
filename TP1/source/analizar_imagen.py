@@ -4,10 +4,8 @@ from PIL import Image
 import subprocess
 
 def imagen_a_txt(ruta_imagen, ruta_salida, max_size=12):
-    """Convierte imagen a matriz de energía en formato .txt"""
     img = Image.open(ruta_imagen).convert("RGB")
     
-    # Redimensionar para que FB y BT sean viables
     img = img.resize((max_size, max_size))
     img_array = np.array(img).astype(float)
     
@@ -20,7 +18,6 @@ def imagen_a_txt(ruta_imagen, ruta_salida, max_size=12):
         energia += dx**2 + dy**2
     energia = np.sqrt(energia)
     
-    # Calcular y mostrar varianza
     print(f"Imagen: {ruta_imagen}")
     print(f"Varianza de energía: {np.var(energia):.2f}")
     print(f"Desvío estándar:     {np.std(energia):.2f}")
@@ -28,7 +25,6 @@ def imagen_a_txt(ruta_imagen, ruta_salida, max_size=12):
     print(f"Min:                 {np.min(energia):.2f}")
     print(f"Max:                 {np.max(energia):.2f}")
     
-    # Guardar como .txt
     with open(ruta_salida, 'w') as f:
         f.write(f"{n} {m}\n")
         for fila in energia:
@@ -44,10 +40,9 @@ def medir_tiempo(algoritmo, ruta_txt):
         capture_output=True
     )
     fin = time.time()
-    return (fin - inicio) * 1000  # ms
+    return (fin - inicio) * 1000  
 
-# ── USO ──────────────────────────────────────────────────────
-ruta_imagen = "img/varianza alta.jpg"       # cambiá por tu imagen
+ruta_imagen = "img/varianza alta.jpg"      
 ruta_txt    = "input/img_energia.txt"
 
 energia = imagen_a_txt(ruta_imagen, ruta_txt, max_size=12)
