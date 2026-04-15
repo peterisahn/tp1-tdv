@@ -40,14 +40,14 @@ def medir_tiempo(algoritmo, ruta_txt):
     """Mide el tiempo de ejecución del ejecutable C++"""
     inicio = time.time()
     subprocess.run(
-        ["main.exe", "--numerico", ruta_txt, "--algoritmo", algoritmo],
+        ["./source/seam", "--numerico", ruta_txt, "--algoritmo", algoritmo],
         capture_output=True
     )
     fin = time.time()
     return (fin - inicio) * 1000  # ms
 
 # ── USO ──────────────────────────────────────────────────────
-ruta_imagen = "img/varianza alta.jpg"       # cambiá por tu imagen
+ruta_imagen = "img/varianzaalta.jpg"       # cambiá por tu imagen
 ruta_txt    = "input/img_energia.txt"
 
 energia = imagen_a_txt(ruta_imagen, ruta_txt, max_size=12)
