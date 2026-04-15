@@ -4,6 +4,7 @@
 
 using namespace std;
 
+static int podas = 0;
 
  void encontrarSeamBackTracking_aux(const vector<vector<double>>& energia, int fila, int columna, vector<int>& actual, vector<int>& mejor, double& mejorSuma, double sumaActual) {
      int n = energia.size();
@@ -14,6 +15,7 @@ using namespace std;
      sumaActual += energia[fila][columna];
 
      if(sumaActual >= mejorSuma){
+        podas++;
          actual.pop_back();
          return;
      }else if(fila == n - 1){
@@ -35,7 +37,7 @@ using namespace std;
 
  vector<int> encontrarSeamBacktracking(const vector<vector<double>>& energia) {
      int m = energia[0].size();
-
+     podas = 0;
      vector<int> mejor;
      vector<int> actual;
      double mejorSuma = numeric_limits<double>::infinity();
@@ -48,65 +50,6 @@ using namespace std;
      return mejor;
  }
 
-
-// --------------
-
-//#include <iostream>
-//#include "FuerzaBruta.h"
-//#include <vector>
-//#include <climits>
-//using namespace std;
-//
-//double BackTracking(const vector<vector<double>>& energia, int fila, int col, vector<int>& res, double costoAcum, double& mejorCosto) {
-//    int n = energia.size();
-//    int m = energia[0].size();
-//
-//    costoAcum += energia[fila][col];
-//    if (costoAcum >= mejorCosto) return INT_MAX;
-//
-//    // Caso base  
-//    if (fila == n - 1) {
-//        res.push_back(col);
-//        mejorCosto = costoAcum; 
-//        return energia[fila][col];
-//    }
-//    int infinito = INT_MAX;
-//    double mejorCostoActual = infinito;
-//
-//    // Explorar los 3 vecinos de la fila siguiente
-//    int i = -1;
-//    while(i <= 1){
-//    
-//        int nextCol = col + i;
-//        if (nextCol >= 0 && nextCol < m) {
-//            vector<int> resAct;
-//            double costo = BackTracking(energia, fila + 1, nextCol, resAct, costoAcum, mejorCosto);
-//            if (costo < mejorCostoActual) {
-//                mejorCostoActual = costo;
-//                res = resAct;
-//            }
-//        }
-//        i = i + 1;
-//    }
-//
-//    res.insert(res.begin(), col); // agrego columna actual al inicio
-//    return energia[fila][col] + mejorCostoActual;
-//}
-//
-//// Función principal: prueba todas las columnas de la fila 0
-//vector<int> encontrarSeamBacktracking(const vector<vector<double>>& energia) {
-//    int m = energia[0].size();
-//    double mejorCosto = INT_MAX;
-//    vector<int> mejorRes;
-//
-//    for (int j = 0; j < m; j++) {
-//        vector<int> res;
-//        double costo = BackTracking(energia, 0, j, res, 0, mejorCosto);
-//        if (costo < mejorCosto) {
-//            mejorCosto = costo;
-//            mejorRes = res;
-//        }
-//    }
-//
-//    return mejorRes;
-//}
+int obtenerPodas() {
+    return podas;
+}

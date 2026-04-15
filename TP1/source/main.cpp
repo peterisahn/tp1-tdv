@@ -8,6 +8,12 @@
 #include "FuerzaBruta.h"
 #include "Backtracking.h"
 #include "ProgramacionDinamica.h"
+#include <chrono>
+
+#include <chrono>
+#include <filesystem>
+
+using namespace std;
 
 // Lee una matriz de energía desde un archivo de texto.
 // Formato esperado:
@@ -29,6 +35,7 @@ std::vector<std::vector<double>> leerMatrizEnergia(const std::string& ruta) {
 
     return energia;
 }
+
 
 // Ejecuta el algoritmo seleccionado y devuelve el seam encontrado
 std::vector<int> ejecutarAlgoritmo(const std::vector<std::vector<double>>& energia, const std::string& algoritmo) {
@@ -63,14 +70,22 @@ void modoNumerico(const std::string& rutaEntrada, const std::string& algoritmo) 
     imprimirMatriz(energia);
     std::cout << "\n";
 
+    auto start = std::chrono::high_resolution_clock::now();
     std::vector<int> seam = ejecutarAlgoritmo(energia, algoritmo);
+    auto end = std::chrono::high_resolution_clock::now();
+    double tiempo = std::chrono::duration<double, std::milli>(end - start).count();
+
     imprimirSeam(seam, energia);
+
+    std::cout << "Tiempo de ejecución: " << tiempo << " ms\n";
 
     std::string rutaSalida = "output/numericos/seam_" + algoritmo + ".txt";
     std::ofstream salida(rutaSalida);
     if (salida.is_open()) {
         for (int f = 0; f < (int)seam.size(); f++)
             salida << "fila " << f << " -> columna " << seam[f] << "\n";
+
+        salida << "Tiempo(ms): " << tiempo << "\n";
         std::cout << "Resultado guardado en " << rutaSalida << "\n";
     }
 }
@@ -79,17 +94,25 @@ void modoImagen(const std::string& rutaImagen, const std::string& algoritmo, int
     Imagen img(rutaImagen);
     std::cout << "Imagen cargada: " << img.ancho() << "x" << img.alto() << " px\n";
 
+    auto start_total = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < iteraciones; i++) {
+        auto start = std::chrono::high_resolution_clock::now();
         std::vector<int> seam = ejecutarAlgoritmo(img.obtenerMatrizEnergia(), algoritmo);
+        auto end = std::chrono::high_resolution_clock::now();
+        double tiempo_iter = std::chrono::duration<double, std::milli>(end - start).count();
         img.eliminarSeam(seam);
 
         if ((i + 1) % 10 == 0 || i == iteraciones - 1)
             std::cout << "Iteración " << (i + 1) << "/" << iteraciones
+                      << " - Tiempo: " << tiempo_iter << " ms"
                       << " - Ancho actual: " << img.ancho() << " px\n";
     }
 
-    std::string rutaSalida = "output/imagenes/resultado_" + algoritmo + ".png";
+    auto end_total = std::chrono::high_resolution_clock::now();
+    double tiempo_total = std::chrono::duration<double, std::milli>(end_total - start_total).count();
+    std::string rutaSalida = "../output/imagenes/resultado_" + algoritmo + ".png";
     img.guardar(rutaSalida);
+    std::cout << "Tiempo total: " << tiempo_total << " ms\n"; 
     std::cout << "Imagen guardada en " << rutaSalida << "\n";
 }
 
@@ -102,7 +125,65 @@ void imprimirUso() {
               << "  ./seam --imagen img/foto.jpg --algoritmo pd --iteraciones 50\n";
 }
 
+
+void correrExperimentos() {
+    ofstream csv("resultados.csv");
+    csv << "algoritmo,varianza,instancia,tiempo_ms,podas\n"; // header
+
+    vector<string> varianzas = {"baja", "media", "alta"};
+    vector<string> algoritmos = {"bt", "fb", "pd"};
+
+    int repeticiones = 5;
+
+    for (string var : varianzas) {
+        for (int i = 0; i < 5; i++) {
+
+            string path = "../input/exp_var/" + var + "_" + to_string(i) + ".txt";
+            auto energia = leerMatrizEnergia(path);
+            
+            for (string alg : algoritmos) {
+                double podas_total = 0.0;
+                double tiempo_total = 0.0;
+
+                for (int r = 0; r < repeticiones; r++) {
+
+                    auto start = chrono::high_resolution_clock::now();
+
+                    if (alg == "bt") {
+                        ejecutarAlgoritmo(energia, alg);
+                        podas_total += obtenerPodas();
+                    } else {
+                        ejecutarAlgoritmo(energia, alg);
+                    }
+
+                    auto end = chrono::high_resolution_clock::now();
+
+                    double tiempo = chrono::duration<double, milli>(end - start).count();
+                    tiempo_total += tiempo;
+                }
+
+                double promedio = tiempo_total / repeticiones;
+                double promedio_podas = (alg == "bt") ? podas_total / repeticiones : 0;
+                csv << alg << "," << var << "," << i << "," << promedio << "," << promedio_podas << "\n";
+
+                cout << "✔ " << alg << " " << var << "_" << i
+                        << " -> " << promedio << " ms"
+                        << " | podas: " << promedio_podas << "\n";
+            }
+        }
+    }
+
+    csv.close();
+    cout << "\n📊 Resultados guardados en resultados.csv\n";
+}
+
+
 int main(int argc, char* argv[]) {
+
+    if (argc >= 2 && string(argv[1]) == "--exp") {
+        correrExperimentos();
+        return 0;
+    }
     if (argc < 2) {
         imprimirUso();
         return 1;
@@ -145,3 +226,5 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
+

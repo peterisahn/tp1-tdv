@@ -3,3 +3,4 @@
 #include <vector>
 
 std::vector<int> encontrarSeamBacktracking(const std::vector<std::vector<double>>& energia);
+int obtenerPodas();

@@ -1,11 +1,12 @@
 from math import inf
 
-
+podas = 0
 def back_tracking(energia, fila, col, costo_acum, mejor_costo):
     """
     Retorna (costo_minimo_desde_aqui, camino) desde (fila, col) hasta la última fila.
     mejor_costo[0] es la poda global.
     """
+    global podas
     n = len(energia)
     m = len(energia[0])
 
@@ -13,6 +14,7 @@ def back_tracking(energia, fila, col, costo_acum, mejor_costo):
 
     # Poda: si el acumulado ya supera o iguala el mejor conocido, cortar
     if costo_acum >= mejor_costo[0]:
+        podas += 1
         return inf, []
 
     # Caso base
@@ -37,7 +39,9 @@ def back_tracking(energia, fila, col, costo_acum, mejor_costo):
 
 
 def encontrar_seam_backtracking(energia):
+    global podas
     m = len(energia[0])
+    podas = 0
     mejor_costo = [inf]  # lista para simular paso por referencia
     mejor_res = []
     mejor_total = inf
@@ -50,6 +54,7 @@ def encontrar_seam_backtracking(energia):
 
     return mejor_res
 
-
+def obtener_podas():
+    return podas
 
 # URL chat con IA --> https://claude.ai/share/9d32cc2f-64eb-4dfb-bde7-6c8ddefafdde
