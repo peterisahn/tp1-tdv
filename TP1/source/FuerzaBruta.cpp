@@ -18,7 +18,7 @@ double FuerzaBruta(const vector<vector<double>>& energia, int fila, int columna,
 
     // Caso General / Recursivo: 
     int infinito = INT_MAX;     // Inicializamos la variable infinito (con la forma vista en clase)
-    double mejor_costo = infinito; //Inicializamos mejorCosto, que se va actualizando a medida que encuentre un menor costo de energía
+    double mejor_costo = infinito; //Inicializamos mejor_costo, que se va actualizando a medida que encuentre un menor costo de energía
 
     // El ciclo recorre (hasta) los 3 vecinos de la celda actual, que se encuentran en la siguiente fila
     int i = -1;
