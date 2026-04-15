@@ -53,7 +53,7 @@ static int podas = 0;
      // Inicializamos con 0 podas
      podas = 0;
 
-     // Inicializamos mejor y actual, que contendrán los índices
+     // Inicializamos mejor_seam y actual_seam, que contendrán los índices
      vector<int> mejor_seam;
      vector<int> actual_seam;
 
