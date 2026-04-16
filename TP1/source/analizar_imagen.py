@@ -42,7 +42,7 @@ def medir_tiempo(algoritmo, ruta_txt):
     fin = time.time()
     return (fin - inicio) * 1000  
 
-ruta_imagen = "img/varianzaalta.jpg"      
+ruta_imagen = "img/foto.jpg"      
 ruta_txt    = "input/img_energia.txt"
 
 energia = imagen_a_txt(ruta_imagen, ruta_txt, max_size=12)

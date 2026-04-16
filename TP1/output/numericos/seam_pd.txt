@@ -1,13 +1,15 @@
-fila 0 -> columna 0
-fila 1 -> columna 1
-fila 2 -> columna 2
-fila 3 -> columna 1
-fila 4 -> columna 0
-fila 5 -> columna 0
-fila 6 -> columna 0
-fila 7 -> columna 1
-fila 8 -> columna 2
-fila 9 -> columna 2
-fila 10 -> columna 2
-fila 11 -> columna 3
-Tiempo(ms): 0.1525
+fila 0 -> columna 7
+fila 1 -> columna 8
+fila 2 -> columna 7
+fila 3 -> columna 8
+fila 4 -> columna 7
+fila 5 -> columna 8
+fila 6 -> columna 9
+fila 7 -> columna 10
+fila 8 -> columna 9
+fila 9 -> columna 10
+fila 10 -> columna 9
+fila 11 -> columna 9
+fila 12 -> columna 8
+fila 13 -> columna 7
+Tiempo(ms): 0.208459
