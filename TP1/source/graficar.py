@@ -6,9 +6,9 @@ df = pd.read_csv("resultados.csv")
 
 orden = ["baja", "media", "alta"]
 
-# ================================
-# 📊 GRÁFICO 1: TIEMPOS (BT, FB, PD)
-# ================================
+
+# Gráfico 1: Tiempos (BT, FB, PD)
+
 df_tiempos = (
     df.groupby(["varianza", "algoritmo"])["tiempo_ms"]
     .mean()
@@ -25,7 +25,7 @@ ax = df_tiempos.plot(
 ax.set_title("Tiempo de ejecución promedio según la varianza de los datos")
 ax.set_xlabel("Nivel de varianza")
 ax.set_ylabel("Tiempo de ejecución [ms]")
-ax.set_yscale("log")  # 🔥 ESTA LÍNEA
+ax.set_yscale("log")  
 ax.set_xticklabels(orden, rotation=0)
 
 plt.legend(
@@ -40,9 +40,9 @@ plt.savefig("grafico_tiempos.png", dpi=300)
 plt.show()
 
 
-# ================================
-# 📈 GRÁFICO 2: PODAS (igual que antes)
-# ================================
+
+# Gráfico 2: Podas (igual que antes)
+
 df_podas = (
     df[df["algoritmo"] == "bt"]
     .groupby("varianza")["podas"]
