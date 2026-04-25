@@ -126,9 +126,10 @@ void imprimirUso() {
 }
 
 
+// Funcion agregada para generar resultados.csv
 void correrExperimentos() {
     ofstream csv("resultados.csv");
-    csv << "algoritmo,varianza,instancia,tiempo_ms,podas\n"; // header
+    csv << "algoritmo,varianza,instancia,tiempo_ms,podas\n"; 
 
     vector<string> varianzas = {"baja", "media", "alta"};
     vector<string> algoritmos = {"bt", "fb", "pd"};

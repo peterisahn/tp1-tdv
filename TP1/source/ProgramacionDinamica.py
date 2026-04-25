@@ -17,7 +17,7 @@ def encontrar_seam_pd_aux(energia, fila, columna, M):
     # Caso Base: llegamos a la última fila
     if fila == n - 1:
         return 
-    elif M[fila][columna] != -1:
+    elif M[fila][columna] != -1: # Si ya fue calculado, no recalcular 
         return 
     else:
         # Caso recursivo: probar los vecinos válidos en la fila siguiente
@@ -25,13 +25,17 @@ def encontrar_seam_pd_aux(energia, fila, columna, M):
 
         for columna_adyacente in range(-1, 2):
             siguiente_columna = columna + columna_adyacente
+            # Solo considerar vecinos válidos
             if 0 <= siguiente_columna < m:
                 encontrar_seam_pd_aux(energia, fila + 1, siguiente_columna, M)
+                # Guardar costo ya calculado del vecino
                 vecinos_adyacentes.append(M[fila+1][siguiente_columna])    
+        # Guardar el costo mínimo desde esta posición
         M[fila][columna] = energia[fila][columna] + minimo_energia(vecinos_adyacentes)
 
 
 def reconstruccion_res(energia, M, res):
+    # Reconstruye el seam óptimo a partir de la matriz M
     n = len(energia)
     m = len(energia[0])
 
