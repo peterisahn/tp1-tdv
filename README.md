@@ -1,6 +1,6 @@
 # TD V - Diseño de Algoritmos: Trabajo Práctico Seam Carving
 
-Repositorio con la implementación, experimentación y análisis comparativo del problema de Seam Carving (redimensionamiento de imágenes) para la materia Tecnología Digital V: Diseño de Algoritmos.
+Repositorio con la implementación, experimentación y análisis comparativo del problema de Seam Carving (redimensionamiento de imágenes) para la materia Tecnología Digital V - Diseño de Algoritmos.
 
 ## Contenido
 
