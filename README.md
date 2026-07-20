@@ -5,9 +5,9 @@ Repositorio con la implementación, experimentación y análisis comparativo del
 ## Contenido
 
 - **Implementación en C++**:
-  - Fuerza Bruta (FB): Exploración exhaustiva del espacio de soluciones.
-  - Backtracking (BT): Optimización recursiva usando podas por optimalidad.
-  - Programación Dinámica (PD): Enfoque eficiente reconstruyendo la costura óptima.
+  - Fuerza Bruta: Exploración exhaustiva del espacio de soluciones.
+  - Backtracking: Optimización recursiva usando podas por optimalidad.
+  - Programación Dinámica: Enfoque eficiente reconstruyendo la costura óptima.
 - **Implementaciones en Python**:
   - Re-implementación de las estrategias de Backtracking y Programación Dinámica.
 - **Modos de Ejecución**:
